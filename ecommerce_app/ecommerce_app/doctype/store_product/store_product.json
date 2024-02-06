@@ -10,7 +10,9 @@
  "field_order": [
   "printrove_id",
   "sku",
-  "retail_price"
+  "retail_price",
+  "front_mockup",
+  "back_mockup"
  ],
  "fields": [
   {
@@ -28,11 +30,21 @@
    "fieldtype": "Data",
    "label": "Printrove ID",
    "unique": 1
+  },
+  {
+   "fieldname": "front_mockup",
+   "fieldtype": "Attach",
+   "label": "Front Mockup"
+  },
+  {
+   "fieldname": "back_mockup",
+   "fieldtype": "Attach",
+   "label": "Back Mockup"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-02-06 23:35:00.719497",
+ "modified": "2024-02-07 00:59:33.500435",
  "modified_by": "Administrator",
  "module": "Ecommerce App",
  "name": "Store Product",
