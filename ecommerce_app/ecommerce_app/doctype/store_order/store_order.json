@@ -1,0 +1,180 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:ORDER-{YYYY}-{MM}-{####}",
+ "creation": "2024-02-06 14:13:13.194530",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "product_details_tab",
+  "product",
+  "column_break_nnluc",
+  "retail_price",
+  "customer_details_section",
+  "status",
+  "user",
+  "customer_name",
+  "column_break_fdjic",
+  "phone_number",
+  "billing_details_tab",
+  "address_line_1",
+  "address_line_2",
+  "address_line_3_landmark",
+  "pincode",
+  "column_break_taohs",
+  "city",
+  "country",
+  "state",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "customer_details_section",
+   "fieldtype": "Tab Break",
+   "label": "Customer Details"
+  },
+  {
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "label": "User",
+   "options": "User"
+  },
+  {
+   "fieldname": "customer_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Customer Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_fdjic",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "phone_number",
+   "fieldtype": "Data",
+   "label": "Phone Number",
+   "options": "Phone"
+  },
+  {
+   "fieldname": "address_line_1",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Address Line 1",
+   "reqd": 1
+  },
+  {
+   "fieldname": "address_line_2",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Address Line 2",
+   "reqd": 1
+  },
+  {
+   "fieldname": "address_line_3_landmark",
+   "fieldtype": "Data",
+   "label": "Address Line 3 Landmark"
+  },
+  {
+   "fieldname": "country",
+   "fieldtype": "Select",
+   "label": "Country",
+   "options": "Egypt\nUSA"
+  },
+  {
+   "fieldname": "city",
+   "fieldtype": "Data",
+   "label": "City"
+  },
+  {
+   "fieldname": "state",
+   "fieldtype": "Data",
+   "label": "State"
+  },
+  {
+   "fieldname": "pincode",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Pincode",
+   "reqd": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Store Order",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Pending\nPlaced\nDelivered"
+  },
+  {
+   "fieldname": "billing_details_tab",
+   "fieldtype": "Tab Break",
+   "label": "Billing Details"
+  },
+  {
+   "fieldname": "column_break_taohs",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "product_details_tab",
+   "fieldtype": "Tab Break",
+   "label": "Product Details"
+  },
+  {
+   "fieldname": "product",
+   "fieldtype": "Link",
+   "label": "Product",
+   "options": "Store Product"
+  },
+  {
+   "fieldname": "column_break_nnluc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "product.retail_price",
+   "fetch_if_empty": 1,
+   "fieldname": "retail_price",
+   "fieldtype": "Currency",
+   "label": "Retail Price"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2024-02-06 22:01:12.300423",
+ "modified_by": "Administrator",
+ "module": "Ecommerce App",
+ "name": "Store Order",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1,
+ "track_seen": 1,
+ "track_views": 1
+}
