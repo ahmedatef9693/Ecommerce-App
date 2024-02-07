@@ -1,25 +1,24 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "prompt",
  "creation": "2024-02-06 15:19:04.124034",
  "default_view": "List",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "printrove_id",
-  "sku",
   "retail_price",
+  "is_published",
+  "printrove_data_section",
+  "printrove_id",
+  "section_break_nmd7n",
+  "front_mockup_image",
   "front_mockup",
+  "column_break_rfj57",
+  "back_mockup_image",
   "back_mockup"
  ],
  "fields": [
-  {
-   "fieldname": "sku",
-   "fieldtype": "Data",
-   "label": "SKU"
-  },
   {
    "fieldname": "retail_price",
    "fieldtype": "Currency",
@@ -29,26 +28,58 @@
    "fieldname": "printrove_id",
    "fieldtype": "Data",
    "label": "Printrove ID",
+   "read_only": 1,
    "unique": 1
   },
   {
    "fieldname": "front_mockup",
-   "fieldtype": "Attach",
+   "fieldtype": "Attach Image",
    "label": "Front Mockup"
   },
   {
    "fieldname": "back_mockup",
-   "fieldtype": "Attach",
+   "fieldtype": "Attach Image",
    "label": "Back Mockup"
+  },
+  {
+   "fieldname": "printrove_data_section",
+   "fieldtype": "Section Break",
+   "label": "Printrove Data"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_published",
+   "fieldtype": "Check",
+   "label": "Is Published"
+  },
+  {
+   "fieldname": "front_mockup_image",
+   "fieldtype": "Image",
+   "label": "Front Mockup Image",
+   "options": "front_mockup"
+  },
+  {
+   "fieldname": "back_mockup_image",
+   "fieldtype": "Image",
+   "label": "Back Mockup Image",
+   "options": "back_mockup"
+  },
+  {
+   "fieldname": "column_break_rfj57",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_nmd7n",
+   "fieldtype": "Section Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-02-07 00:59:33.500435",
+ "modified": "2024-02-07 18:48:20.319489",
  "modified_by": "Administrator",
  "module": "Ecommerce App",
  "name": "Store Product",
- "naming_rule": "Set by user",
+ "naming_rule": "By script",
  "owner": "Administrator",
  "permissions": [
   {

@@ -37,21 +37,25 @@ def initializing_data():
 	for product in products:
 		doc = None
 		product_data = {
+		'name':product.get('name'),
 		'front_mockup':product['mockup']['front_mockup'],
 		'back_mockup':product['mockup']['back_mockup']
 		}
 		values = {
 			'doctype':'Store Product',
-			'name':product.get('name'),
 			'printrove_id':product['id'],
 			**product_data
 			}
-		if not frappe.db.exists('Store Product',{'name':product['name']}):
+		if not frappe.db.exists('Store Product',{'printrove_id':product['id']}):
 			doc = frappe.get_doc(values).insert(ignore_permissions=True)
+			frappe.msgprint("not")
 		else:
-			doc = frappe.db.set_value('Store Product', product['name'], {
+			doc_name = frappe.db.sql(f"""select name from `tabStore Product` where printrove_id = {product['id']}""",as_dict=True)[0].name
+			doc = frappe.db.set_value('Store Product', doc_name, {
 				**product_data
 				})
+			frappe.db.commit()
+			frappe.msgprint(product_data['name'])
 
 			
 
