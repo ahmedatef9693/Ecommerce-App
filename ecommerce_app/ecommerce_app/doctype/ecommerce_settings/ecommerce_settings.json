@@ -7,9 +7,13 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "printrove_account_section",
   "email",
   "column_break_jk3oa",
-  "password"
+  "password",
+  "storefront_section",
+  "use_custom_product_view_template",
+  "custom_product_view_template"
  ],
  "fields": [
   {
@@ -27,12 +31,35 @@
   {
    "fieldname": "column_break_jk3oa",
    "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.use_custom_product_view_template==true",
+   "description": "Note : You Can Use `{{ doc.name }}` For Dynamic Access From A Document",
+   "fieldname": "custom_product_view_template",
+   "fieldtype": "HTML Editor",
+   "label": "Custom Product View Template"
+  },
+  {
+   "default": "0",
+   "fieldname": "use_custom_product_view_template",
+   "fieldtype": "Check",
+   "label": "Use Custom Product View Template ?"
+  },
+  {
+   "fieldname": "printrove_account_section",
+   "fieldtype": "Section Break",
+   "label": "Printrove Account"
+  },
+  {
+   "fieldname": "storefront_section",
+   "fieldtype": "Section Break",
+   "label": "Storefront"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-02-06 22:09:14.371138",
+ "modified": "2024-02-07 23:17:28.262576",
  "modified_by": "Administrator",
  "module": "Ecommerce App",
  "name": "Ecommerce Settings",
