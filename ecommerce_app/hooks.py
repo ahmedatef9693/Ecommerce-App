@@ -127,12 +127,11 @@ app_license = "MIT"
 # Scheduled Tasks
 # ---------------
 scheduler_events = {
-	"cron": {
-    "* * * * *":[
-		"ecommerce_app.utils.scripts.initializing_data"
-	]
+	"hourly": [
+        "ecommerce_app.utils.scripts.initializing_data"
+    ],
     }
-}
+
 
 
 # Testing
