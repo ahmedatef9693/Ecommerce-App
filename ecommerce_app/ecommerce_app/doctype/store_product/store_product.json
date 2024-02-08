@@ -11,6 +11,8 @@
   "retail_price",
   "is_published",
   "route",
+  "description_section",
+  "product_description",
   "printrove_data_section",
   "printrove_id",
   "category",
@@ -92,13 +94,25 @@
    "fieldtype": "Data",
    "label": "Category Id",
    "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "collapsible_depends_on": "eval:doc.is_published == 1",
+   "fieldname": "description_section",
+   "fieldtype": "Section Break",
+   "label": "Description"
+  },
+  {
+   "fieldname": "product_description",
+   "fieldtype": "Text Editor",
+   "label": "Product Description"
   }
  ],
  "has_web_view": 1,
  "index_web_pages_for_search": 1,
  "is_published_field": "is_published",
  "links": [],
- "modified": "2024-02-08 14:00:03.543828",
+ "modified": "2024-02-08 16:49:28.517334",
  "modified_by": "Administrator",
  "module": "Ecommerce App",
  "name": "Store Product",

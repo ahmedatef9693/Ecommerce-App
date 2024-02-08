@@ -3,8 +3,16 @@
 {% else %} 
     {%extends "templates/web.html" %} 
     {% block page_content %}
-    <h1>{{ title }}</h1>
+    <h1>{{ doc.get_title() }}</h1>
+    <img width="40%" height="40%" src="{{doc.front_mockup}}" alt="{{doc.get_title()}}">
+    <h3  class="text-uppercase display-6 my-6">{{doc.category}}</h3>
+    <h5 class="fw-bold my-6">Product Description</h5>  
+    <ul class="list-group">
+        <li class="list-group-item disabled">{{doc.product_description}}</li>
+    </ul>
+    {% set formatted_retail_price = frappe.format_value(doc.retail_price,"Currency",currency = "USD") %}
+    <h3  class="text-muted text-uppercase display-6 mt-6">{{formatted_retail_price}}</h3>
+
+    <a class="btn btn-dark" href="#">Buy Now</a>
     {% endblock %} 
 {% endif %}
-
-<!-- this is a sample default web page template -->

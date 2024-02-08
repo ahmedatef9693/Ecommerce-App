@@ -8,6 +8,11 @@ class StoreProduct(WebsiteGenerator):
 	
 
 	def get_context(self,context):
+		context.add_breadcrumbs = 1
+		context.parents = [
+			{"label":"Store","route":"/products"},
+			{"label":self.category,"route":f"/products"}
+		]
 		settings = frappe.get_cached_doc('Ecommerce Settings')
 		if settings.use_custom_product_view_template:
 			rendered_html_template = frappe.render_template(settings.custom_product_view_template,{"doc":self})
