@@ -1,9 +1,6 @@
-
-{% set settings = frappe.get_doc("Ecommerce Settings") %}
-{% extends "templates/web.html" %}
-
-{% block page_content %}
+{% if rendered_html_template %} {{ rendered_html_template}} {% else %} {%extends
+"templates/web.html" %} {% block page_content %}
 <h1>{{ title }}</h1>
-{% endblock %}
+{% endblock %} {% endif %}
 
 <!-- this is a sample default web page template -->

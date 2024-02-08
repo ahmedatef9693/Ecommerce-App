@@ -31,8 +31,6 @@ def initializing_data():
 	token = get_token()
 	products = get_products(token)
 	products = products.get('products')
-
-
 	for product in products:
 		doc = None
 		product_data = {
