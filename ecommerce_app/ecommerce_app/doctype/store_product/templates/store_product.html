@@ -13,6 +13,6 @@
     {% set formatted_retail_price = frappe.format_value(doc.retail_price,"Currency",currency = "USD") %}
     <h3  class="text-muted text-uppercase display-6 mt-6">{{formatted_retail_price}}</h3>
 
-    <a class="btn btn-dark" href="#">Buy Now</a>
+    <a class="btn btn-dark my-6" href="/checkout?product={{doc.name}}">Buy Now</a>
     {% endblock %} 
 {% endif %}
