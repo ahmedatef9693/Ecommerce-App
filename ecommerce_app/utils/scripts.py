@@ -47,7 +47,6 @@ def initializing_data():
 			}
 		if not frappe.db.exists('Store Product',{'printrove_id':product['id']}):
 			doc = frappe.get_doc(values).insert(ignore_permissions=True)
-			frappe.msgprint("not")
 		else:
 			doc_name = frappe.db.sql(f"""select name from `tabStore Product` where printrove_id = {product['id']}""",as_dict=True)[0].name
 			doc = frappe.db.set_value('Store Product', doc_name, {
