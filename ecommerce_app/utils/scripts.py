@@ -2,6 +2,7 @@ import frappe
 from frappe.integrations.utils import make_get_request,make_post_request
 
 BASE_URL = 'https://api.printrove.com/api/external'
+SECONDS_IN_YEAR =	365	* 24 * 60 * 60	
 headers = {
   'Authorization':'',
   'Content-Type': 'application/json',
@@ -9,18 +10,16 @@ headers = {
 }
 
 
-
-
-
-
-
-
-
 def get_token():
-	ecommerce_setting_doc = frappe.get_doc('Ecommerce Settings')
+	token = frappe.cache().get_value('printrove_access_token')
+	if token:
+		return token
+	ecommerce_setting_doc = frappe.get_cached_doc('Ecommerce Settings')
 	response = make_post_request(f'{BASE_URL}/token',data={
 		'email': ecommerce_setting_doc.email, 
 		'password': ecommerce_setting_doc.get_password('password')})
+	#store token for a year
+	frappe.cache().set_value("printrove_access_token", response['access_token'],expires_in_sec= SECONDS_IN_YEAR)
 	return response['access_token']
 
 def get_products(token):
@@ -54,8 +53,6 @@ def initializing_data():
 			doc = frappe.db.set_value('Store Product', doc_name, {
 				**product_data
 				})
-			frappe.db.commit()
-			frappe.msgprint(product_data['name'])
 
 			
 
