@@ -1,6 +1,10 @@
-{% if rendered_html_template %} {{ rendered_html_template}} {% else %} {%extends
-"templates/web.html" %} {% block page_content %}
-<h1>{{ title }}</h1>
-{% endblock %} {% endif %}
+{% if rendered_html_template %}
+    {{ rendered_html_template}} 
+{% else %} 
+    {%extends "templates/web.html" %} 
+    {% block page_content %}
+    <h1>{{ title }}</h1>
+    {% endblock %} 
+{% endif %}
 
 <!-- this is a sample default web page template -->

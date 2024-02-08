@@ -35,6 +35,8 @@ def initializing_data():
 		doc = None
 		product_data = {
 		'name':product.get('name'),
+		'category_id':product.get('product').get('id'),
+		'category':product.get('product').get('name'),
 		'front_mockup':product['mockup']['front_mockup'],
 		'back_mockup':product['mockup']['back_mockup']
 		}

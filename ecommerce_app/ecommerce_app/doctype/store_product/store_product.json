@@ -13,6 +13,8 @@
   "route",
   "printrove_data_section",
   "printrove_id",
+  "category",
+  "category_id",
   "section_break_nmd7n",
   "front_mockup_image",
   "front_mockup",
@@ -78,13 +80,25 @@
    "fieldname": "route",
    "fieldtype": "Data",
    "label": "Route"
+  },
+  {
+   "fieldname": "category",
+   "fieldtype": "Data",
+   "label": "Category ",
+   "read_only": 1
+  },
+  {
+   "fieldname": "category_id",
+   "fieldtype": "Data",
+   "label": "Category Id",
+   "read_only": 1
   }
  ],
  "has_web_view": 1,
  "index_web_pages_for_search": 1,
  "is_published_field": "is_published",
  "links": [],
- "modified": "2024-02-07 22:45:57.554190",
+ "modified": "2024-02-08 14:00:03.543828",
  "modified_by": "Administrator",
  "module": "Ecommerce App",
  "name": "Store Product",
