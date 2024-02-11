@@ -29,6 +29,7 @@
   {
    "fieldname": "retail_price",
    "fieldtype": "Currency",
+   "in_list_view": 1,
    "label": "Retail Price"
   },
   {
@@ -57,6 +58,7 @@
    "default": "0",
    "fieldname": "is_published",
    "fieldtype": "Check",
+   "in_list_view": 1,
    "label": "Is Published"
   },
   {
@@ -87,6 +89,7 @@
   {
    "fieldname": "category",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Category ",
    "read_only": 1
   },
@@ -113,7 +116,7 @@
  "index_web_pages_for_search": 1,
  "is_published_field": "is_published",
  "links": [],
- "modified": "2024-02-08 17:54:19.836257",
+ "modified": "2024-02-12 00:44:03.141036",
  "modified_by": "Administrator",
  "module": "Ecommerce App",
  "name": "Store Product",
