@@ -9,21 +9,23 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "retail_price",
-  "is_published",
-  "route",
-  "description_section",
-  "product_description",
-  "printrove_data_section",
-  "printrove_id",
-  "category",
-  "category_id",
   "section_break_nmd7n",
   "front_mockup_image",
   "front_mockup",
   "column_break_rfj57",
   "back_mockup_image",
-  "back_mockup"
+  "back_mockup",
+  "section_break_opi8c",
+  "retail_price",
+  "is_published",
+  "route",
+  "variants",
+  "description_section",
+  "product_description",
+  "printrove_data_section",
+  "printrove_id",
+  "category",
+  "category_id"
  ],
  "fields": [
   {
@@ -110,13 +112,24 @@
    "fieldname": "product_description",
    "fieldtype": "Text Editor",
    "label": "Product Description"
+  },
+  {
+   "fieldname": "section_break_opi8c",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "variants",
+   "fieldtype": "Table",
+   "label": "Variants",
+   "options": "Store Product Variant",
+   "read_only": 1
   }
  ],
  "has_web_view": 1,
  "index_web_pages_for_search": 1,
  "is_published_field": "is_published",
  "links": [],
- "modified": "2024-02-12 00:44:03.141036",
+ "modified": "2024-02-12 21:01:07.888737",
  "modified_by": "Administrator",
  "module": "Ecommerce App",
  "name": "Store Product",

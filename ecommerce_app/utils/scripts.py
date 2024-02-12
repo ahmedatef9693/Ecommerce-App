@@ -26,6 +26,21 @@ def get_products(token):
 	headers.update({'Authorization':f'Bearer {token}'})
 	return make_get_request(f'{BASE_URL}/products',headers=headers)
 
+def get_varaints(printrove_id):
+	response = make_get_request(f'{BASE_URL}/products/{printrove_id}',headers=headers)
+	variants_list = []
+	for variant in response['product']['variants']:
+		variants_list.append({
+			'variant_id': variant['id'],
+			'sku': variant['sku'],
+			'color':variant['product']['color'],
+			'size':variant['product']['size'],
+			'variant_name':variant['product']['name'],
+		})
+	return variants_list
+
+
+
 @frappe.whitelist()
 def initializing_data():
 	token = get_token()
@@ -33,25 +48,28 @@ def initializing_data():
 	products = products.get('products')
 	for product in products:
 		doc = None
+		variants = get_varaints(product['id'])
 		product_data = {
+		'doctype':'Store Product',
+		'printrove_id':product['id'],
 		'name':product.get('name'),
 		'category_id':product.get('product').get('id'),
 		'category':product.get('product').get('name'),
 		'front_mockup':product['mockup']['front_mockup'],
-		'back_mockup':product['mockup']['back_mockup']
+		'back_mockup':product['mockup']['back_mockup'],
+		'variants':variants
 		}
-		values = {
-			'doctype':'Store Product',
-			'printrove_id':product['id'],
-			**product_data
-			}
 		if not frappe.db.exists('Store Product',{'printrove_id':product['id']}):
-			doc = frappe.get_doc(values).insert(ignore_permissions=True)
+			doc = frappe.get_doc(product_data).insert(ignore_permissions=True)
 		else:
-			doc_name = frappe.db.sql(f"""select name from `tabStore Product` where printrove_id = {product['id']}""",as_dict=True)[0].name
-			doc = frappe.db.set_value('Store Product', doc_name, {
+			doc = frappe.get_doc("Store Product",{'printrove_id':product['id']})
+			doc.update({
 				**product_data
-				})
+			})
+			doc.save(ignore_permissions=True)
+
+	
+
 
 			
 
