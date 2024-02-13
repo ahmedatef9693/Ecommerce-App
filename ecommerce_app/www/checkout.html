@@ -1,1 +1,64 @@
-<h1>{{frappe.form_dict.get('product')}}</h1>
+
+{% extends "templates/web.html" %}
+
+{% block script %}
+    <script src="checkout.js"></script>
+{% endblock %}
+
+{% block page_content %}
+    <h1>Fill Form For Product : {{frappe.form_dict.get('product')}}</h1>
+
+    <form id="payment_form">
+        <div class="form-group">
+          <label class="control-label reqd" for="customer_name">Name</label>
+          <input required name="customer_name" class="form-control" id="customer_name" placeholder="Enter Name">
+          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div class="form-group">
+            <label for="phone_number">Phone Number</label>
+            <input type="tel" required name="phone_number" class="form-control" id="phone_number" placeholder="Enter Phone Number">
+        </div>
+
+        <div class="form-group">
+            <label for="address_line_1">Address Line 1</label>
+            <input type="text" required name="address_line_1" class="form-control" id="address_line_1" placeholder="Enter Address Line 1">
+        </div>
+
+        <div class="form-group">
+            <label for="address_line_2">Address Line 2</label>
+            <input type="text" required name="address_line_2" class="form-control" id="address_line_2" placeholder="Enter Address Line 2">
+        </div>
+
+        <div class="form-group">
+            <label for="address_line_3">Address Line 3</label>
+            <input type="text" required name="address_line_3" class="form-control" id="address_line_3" placeholder="Enter Address Line 3">
+        </div>
+
+        <div class="form-group">
+            <label for="country">Country</label>
+            <input type="text" required name="country" class="form-control" id="country" placeholder="Enter Your Country">
+        </div>
+
+        <div class="form-group">
+            <label for="state">State</label>
+            <input type="text" required name="state" class="form-control" id="state" placeholder="Enter Your State">
+        </div>
+
+        <div class="form-group">
+            <label for="city">City</label>
+            <input type="text" required name="city" class="form-control" id="city" placeholder="Enter Your State">
+        </div>
+
+        <div class="form-group">
+            <label for="pincode">Pincode</label>
+            <input type="text" required name="pincode" class="form-control" id="pincode" placeholder="Enter Pincode">
+        </div>
+
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input dark" id="is_cod">
+          <label class="form-check-label" for="is_cod">cash on delivery</label>
+        </div>
+        <button class="btn btn-dark my-6" type="submit" class="btn btn-primary">Make Order & Pay</button>
+      </form>
+        
+{% endblock %}
