@@ -52,7 +52,6 @@ def initializing_data():
 		product_data = {
 		'doctype':'Store Product',
 		'printrove_id':product['id'],
-		'name':product.get('name'),
 		'category_id':product.get('product').get('id'),
 		'category':product.get('product').get('name'),
 		'front_mockup':product['mockup']['front_mockup'],
@@ -60,13 +59,15 @@ def initializing_data():
 		'variants':variants
 		}
 		if not frappe.db.exists('Store Product',{'printrove_id':product['id']}):
+			product_data.update({'name':product.get('name')})
 			doc = frappe.get_doc(product_data).insert(ignore_permissions=True)
 		else:
 			doc = frappe.get_doc("Store Product",{'printrove_id':product['id']})
-			doc.update({
-				**product_data
-			})
-			doc.save(ignore_permissions=True)
+			doc.update(product_data)
+			doc.save()
+			frappe.db.set_value("Store Product",{'printrove_id':product['id']},'name',product.get('name'))
+
+
 
 	
 
