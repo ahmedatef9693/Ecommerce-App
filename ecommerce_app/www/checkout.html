@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block page_content %}
-    <h1>Fill Form For Product : {{frappe.form_dict.get('product')}}</h1>
+    <h1 id="product_name">Fill Form For Product : {{frappe.form_dict.get('product')}}</h1>
 
     <form id="payment_form">
         <div class="form-group">
