@@ -1,0 +1,26 @@
+{
+ "allow_roles": [
+  {
+   "role": "System Manager"
+  }
+ ],
+ "creation": "2024-02-14 12:06:14.462424",
+ "docstatus": 0,
+ "doctype": "Module Onboarding",
+ "documentation_url": "https://github.com/ahmedatef9693/Ecommerce-App",
+ "idx": 0,
+ "is_complete": 0,
+ "modified": "2024-02-14 12:11:43.388553",
+ "modified_by": "Administrator",
+ "module": "Ecommerce App",
+ "name": "Printrove Onboarding",
+ "owner": "Administrator",
+ "steps": [
+  {
+   "step": "Set Account Credentials"
+  }
+ ],
+ "subtitle": "fill in few credentials and you are ready to go",
+ "success_message": "Your Merchandise Store Is Ready Go !",
+ "title": "Setup Your Store"
+}
