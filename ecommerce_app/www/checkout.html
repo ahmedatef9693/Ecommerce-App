@@ -6,14 +6,36 @@
 {% endblock %}
 
 {% block page_content %}
-    <h1 id="product_name">Fill Form For Product : {{frappe.form_dict.get('product')}}</h1>
-
+    {% set product_name = frappe.form_dict.get('product') %}
+    {% set variants = frappe.get_cached_doc("Store Product",product_name).variants %}
+    <h1 id="product_name">Fill Form For Product : {{ product_name }}</h1>
     <form id="payment_form">
         <div class="form-group">
           <label class="control-label reqd" for="customer_name">Name</label>
           <input required name="customer_name" class="form-control" id="customer_name" placeholder="Enter Name">
-          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
         </div>
+
+        <div class="form-group">
+            <label class="control-label reqd" for="product_size">Size</label>
+            <select name = "size" required class="form-control" id="product_size">
+                <option value="ll" disabled selected>Choose Size</option>
+                {% for variant in variants | unique(attribute = "size") %}
+                    <option value="{{variant.size}}">
+                        {{variant.size}}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+
+        <div class="form-group">
+            <label class="control-label reqd" for="product_color">Color</label>
+            <select name = "color" required class="form-control" id="product_color">
+                <option value="" disabled selected>Choose Color</option>
+
+            </select>
+        </div>
+
         <div class="form-group">
             <label for="phone_number">Phone Number</label>
             <input type="tel" required name="phone_number" class="form-control" id="phone_number" placeholder="Enter Phone Number">
