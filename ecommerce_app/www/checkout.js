@@ -13,6 +13,7 @@ document.querySelector("#payment_form").addEventListener("submit", (event) => {
         message: "Order Successfully!",
         indicator: "green",
       });
+      console.log("done requesting");
     },
     error: (r) => {
       // on error

@@ -110,7 +110,7 @@
   },
   {
    "fieldname": "product_description",
-   "fieldtype": "Text Editor",
+   "fieldtype": "Text",
    "label": "Product Description"
   },
   {
@@ -129,7 +129,7 @@
  "index_web_pages_for_search": 1,
  "is_published_field": "is_published",
  "links": [],
- "modified": "2024-02-12 21:01:07.888737",
+ "modified": "2024-02-18 01:25:49.269137",
  "modified_by": "Administrator",
  "module": "Ecommerce App",
  "name": "Store Product",

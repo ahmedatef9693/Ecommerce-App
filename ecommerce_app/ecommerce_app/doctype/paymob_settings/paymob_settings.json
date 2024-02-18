@@ -7,19 +7,25 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "api_key"
+  "api_key",
+  "integration_id"
  ],
  "fields": [
   {
    "fieldname": "api_key",
    "fieldtype": "Data",
    "label": "Api Key"
+  },
+  {
+   "fieldname": "integration_id",
+   "fieldtype": "Data",
+   "label": "Integration Id"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-02-14 00:03:51.327522",
+ "modified": "2024-02-18 01:55:31.236313",
  "modified_by": "Administrator",
  "module": "Ecommerce App",
  "name": "PayMob Settings",
