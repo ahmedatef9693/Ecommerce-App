@@ -61,8 +61,10 @@ def initializing_data():
 		if not frappe.db.exists('Store Product',{'printrove_id':product['id']}):
 			product_data.update({'name':product.get('name')})
 			doc = frappe.get_doc(product_data).insert(ignore_permissions=True)
+			doc.product_description = doc.name
 		else:
 			doc = frappe.get_doc("Store Product",{'printrove_id':product['id']})
+			doc.product_description = doc.name
 			doc.update(product_data)
 			doc.save()
 			frappe.db.set_value("Store Product",{'printrove_id':product['id']},'name',product.get('name'))
