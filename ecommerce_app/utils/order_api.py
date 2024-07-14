@@ -94,8 +94,8 @@ def make_order_pay(token,product_name,order_data):
 		order_id = response.get('id')
 		integration_id = paymob_setting_doc.integration_id
 		payments_access_token = get_payments_data(token,order_id,integration_id,order_data,store_product_doc,ecommerce_setting_doc)	
-		print(f'\n\n\nresponse\n\n\n')
-		print(f'\n\n\n{response}\n\n\n')
+		print(f'\n\n\npayment access token\n\n\n')
+		print(f'\n\n\n{payments_access_token}\n\n\n')
 		external_url = f"https://accept.paymob.com/api/acceptance/iframes/824545?payment_token={payments_access_token}"
 		return external_url
 	else:
@@ -123,7 +123,7 @@ def get_token(token_name,payment_data = None):
 		if payment_data:
 			print('\n\nEnter again\n\n\n')
 			print(f'\n\n{payment_data}\n\n\n')
-			response = requests.request("POST",f"{BASE_URL}ecommerce/orders",headers=HEADERS,data=payment_data).text
+			response = requests.request("POST",f"{BASE_URL}acceptance/payment_keys",headers=HEADERS,data=payment_data).text
 			response = json.loads(response)
 			print(f'\n\n{response}\n\n\n')
 			frappe.cache().set_value("payment_access_token", response.get('token'),expires_in_sec= TOKEN_EXIPRY_TIME)
