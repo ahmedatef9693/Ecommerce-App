@@ -1,15 +1,9 @@
+from ecommerce_app.utils.constants import *
 import frappe
 import requests
 import json
-# from flask import redirect
-
-# from frappe.integrations.utils import make_get_request,make_post_request
-
-BASE_URL =  "https://accept.paymob.com/api/"
-HEADERS = {
-  'Content-Type': 'application/json'
-}
-TOKEN_EXIPRY_TIME = 55 * 60
+from ecommerce_app.utils.tokens import get_token
+from ecommerce_app.utils.payment_api import get_payments_data
 
 @frappe.whitelist()
 def handle_checkout_submit(product_name =None,order_data = None):
@@ -17,30 +11,6 @@ def handle_checkout_submit(product_name =None,order_data = None):
 	paymob_token = get_token("paymob_access_token")
 	url = make_order_pay(paymob_token,product_name,order_data)
 	return url
-
-
-
-
-@frappe.whitelist()
-def get_colors_of_size(product_size,product_name):
-	colors = [
-	   current_color.color for current_color in frappe.db.sql("""
-												   select 
-													   color 
-												   from 
-													   `tabStore Product Variant` 
-												   where 
-													   size = %(size)s 
-												   and 
-													   parent = %(parent)s
-												   """,values={
-													   'size':product_size,
-													   'parent':product_name
-													   },
-													as_dict=True)]
-	return colors
-	
-
 
 def make_order_pay(token,product_name,order_data):
 	store_product_doc = frappe.get_cached_doc("Store Product",product_name)
@@ -89,9 +59,13 @@ def make_order_pay(token,product_name,order_data):
 		}
 		}
 		order = json.dumps(order)
-		response = requests.request("POST",f"{BASE_URL}ecommerce/orders",headers=HEADERS,data=order).text
-		response = json.loads(response)
-		order_id = response.get('id')
+		try:
+			response = requests.request("POST",f"{BASE_URL}ecommerce/orders",headers=HEADERS,data=order).text
+			response = json.loads(response)
+			order_id = response.get('id')
+			create_order(response)
+		except Exception as e:
+			frappe.throw("An Error Occured While Processing Order {0}".format(e))
 		integration_id = paymob_setting_doc.integration_id
 		payments_access_token = get_payments_data(token,order_id,integration_id,order_data,store_product_doc,ecommerce_setting_doc)	
 		print(f'\n\n\npayment access token\n\n\n')
@@ -103,65 +77,38 @@ def make_order_pay(token,product_name,order_data):
 
 
 
-
-def get_token(token_name,payment_data = None):
-	token = ''
-	if token_name == "paymob_access_token":
-		token = frappe.cache().get_value('paymob_access_token')
-		if token:
-			return token
-		paymob_setting_doc = frappe.get_cached_doc('PayMob Settings')
-		payload = json.dumps({'api_key':paymob_setting_doc.api_key})
-		response = json.loads(requests.request("POST", f"{BASE_URL}auth/tokens", headers=HEADERS, data=payload).text)
-		#store token for a 55 minutes at server it expires after 60 minutes 
-		frappe.cache().set_value("paymob_access_token", response['token'],expires_in_sec= TOKEN_EXIPRY_TIME)
-		return response['token']
-	elif token_name == "payment_access_token":
-		token = frappe.cache().get_value("payment_access_token")
-		if token:
-			return token
-		if payment_data:
-			print('\n\nEnter again\n\n\n')
-			print(f'\n\n{payment_data}\n\n\n')
-			response = requests.request("POST",f"{BASE_URL}acceptance/payment_keys",headers=HEADERS,data=payment_data).text
-			response = json.loads(response)
-			print(f'\n\n{response}\n\n\n')
-			frappe.cache().set_value("payment_access_token", response.get('token'),expires_in_sec= TOKEN_EXIPRY_TIME)
-			return response.get('token')
-
-
-
-
-
-def get_payments_data(token,order_id,integration_id,order_data,store_order_doc,ecommerce_setting_doc):
-	payment_data = {
-		"auth_token": token,
-		"amount_cents": store_order_doc.retail_price * 100, 
-		"expiration": 3600, 
-		"order_id": str(order_id),
-		"billing_data": {
-			"apartment": "1", 
-			"email": ecommerce_setting_doc.email, 
-			"floor": "2", 
-			"first_name": "Mr", 
-			"street": order_data.get("address_line_1"), 
-			"building": order_data.get("address_line_2"), 
-			"phone_number": order_data.get("phone_number"), 
-			"shipping_method": "PKG", 
-			"postal_code": order_data.get("pincode"), 
-			"city": order_data.get("city"), 
-			"country": order_data.get("country"), 
-			"last_name": order_data.get("customer_name"), 
-			"state": order_data.get("state")
-		}, 
-		"currency": "EGP", 
-		"integration_id": integration_id,
-		"lock_order_when_paid": "false"
-		}
-	payment_data = json.dumps(payment_data)
-	payment_access_token = get_token("payment_access_token",payment_data = payment_data)
-	return payment_access_token
-
+def create_order(order_response):
+	print("Order Response")
+	print(f"\n\n{order_response}\n\n")
+	store_order_doc = frappe.new_doc('Store Order')
+	store_order_doc.order_id = order_response.get('id')
+	store_order_doc.status = 'Pending'
+	shipping_data = order_response.get('shipping_data')
+	if shipping_data:
+		store_order_doc.phone_number = shipping_data.get('phone_number')
+		if user_exist(shipping_data.get('email')):
+			store_order_doc.user = shipping_data.get('email')
+		store_order_doc.customer_name = shipping_data.get('last_name')
+		store_order_doc.country = shipping_data.get('country')
+		store_order_doc.state = shipping_data.get('city')
+		store_order_doc.address_line_1 = shipping_data.get('building') + ',' + shipping_data.get('street') + ' st.'+ shipping_data.get('floor') + ' fl.' +','+shipping_data.get('apartment')
+		store_order_doc.address_line_2 = shipping_data.get('building') + ',' + shipping_data.get('street') + ' st.'+ shipping_data.get('floor') + ' fl.' +','+shipping_data.get('apartment')
+		if shipping_data.get('postal_code'):
+			store_order_doc.pincode = shipping_data.get('postal_code')
+		else:
+			store_order_doc.pincode = '0123'
+	store_order_doc.currency_type = order_response.get('currency')
+	if len(order_response.get('items')) > 0:
+		for item in order_response.get('items'):
+			store_order_doc.paid_amount = item.get('amount_cents')
+			store_order_doc.quantity = item.get('quantity')
+			store_order_doc.product = get_product_by_sku(item.get('name'))
+	try:
+		store_order_doc.docstatus = 1
+		store_order_doc.insert()
+	except Exception as e:
+		frappe.throw(f"Error While inserting order {e}")
+	frappe.msgprint(f'Order Created <a href="../store-order/{store_order_doc.name}" target="_blank"><strong>{store_order_doc.name}</strong></a>')
 
 
 def validate_retal_price(retail_price):
@@ -169,3 +116,11 @@ def validate_retal_price(retail_price):
 		return False
 	else:
 		return True
+	
+
+def get_product_by_sku(sku):
+	return frappe.db.get_value('Store Product Variant',{'sku':sku},'parent')
+
+
+def user_exist(email):
+	return frappe.db.exists('User',{'email':email})

@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "format:ORDER-{YYYY}-{MM}-{####}",
+ "autoname": "format:ORDER-{YYYY}-{MM}-{DD}-{####}",
  "creation": "2024-02-06 14:13:13.194530",
  "default_view": "List",
  "doctype": "DocType",
@@ -9,9 +9,12 @@
  "engine": "InnoDB",
  "field_order": [
   "product_details_tab",
+  "order_id",
   "product",
+  "paid_amount",
   "column_break_nnluc",
   "retail_price",
+  "quantity",
   "customer_details_section",
   "status",
   "user",
@@ -27,6 +30,7 @@
   "city",
   "country",
   "state",
+  "currency_type",
   "amended_from"
  ],
  "fields": [
@@ -63,6 +67,7 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Address Line 1",
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -70,34 +75,39 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Address Line 2",
+   "read_only": 1,
    "reqd": 1
   },
   {
    "fieldname": "address_line_3_landmark",
    "fieldtype": "Data",
-   "label": "Address Line 3 Landmark"
+   "label": "Address Line 3 Landmark",
+   "read_only": 1
   },
   {
    "fieldname": "country",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "label": "Country",
-   "options": "Egypt\nUSA"
+   "read_only": 1
   },
   {
    "fieldname": "city",
    "fieldtype": "Data",
-   "label": "City"
+   "label": "City",
+   "read_only": 1
   },
   {
    "fieldname": "state",
    "fieldtype": "Data",
-   "label": "State"
+   "label": "State",
+   "read_only": 1
   },
   {
    "fieldname": "pincode",
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Pincode",
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -134,7 +144,8 @@
    "fieldname": "product",
    "fieldtype": "Link",
    "label": "Product",
-   "options": "Store Product"
+   "options": "Store Product",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_nnluc",
@@ -145,13 +156,41 @@
    "fetch_if_empty": 1,
    "fieldname": "retail_price",
    "fieldtype": "Currency",
-   "label": "Retail Price"
+   "label": "Retail Price",
+   "read_only": 1
+  },
+  {
+   "fieldname": "currency_type",
+   "fieldtype": "Data",
+   "label": "Currency Type",
+   "read_only": 1
+  },
+  {
+   "fieldname": "paid_amount",
+   "fieldtype": "Currency",
+   "label": "Paid Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "order_id",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Order Id",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "quantity",
+   "fieldtype": "Data",
+   "label": "Quantity",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-02-06 22:01:12.300423",
+ "modified": "2024-07-15 23:41:17.009121",
  "modified_by": "Administrator",
  "module": "Ecommerce App",
  "name": "Store Order",

@@ -29,7 +29,7 @@ document
     let product_size = this.value;
 
     frappe.call({
-      method: "ecommerce_app.utils.order_api.get_colors_of_size",
+      method: "ecommerce_app.utils.helper_functions.get_colors_of_size",
       args: {
         product_size: product_size,
         product_name: product_name,
