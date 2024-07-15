@@ -1,6 +1,6 @@
 ## Ecommerce App
 
-Application Integrate With Pritrov Api For Ecommerce Use
+Application Integrate With Pritrov And Paymop Apis For Ecommerce Use
 
 #### License
 
