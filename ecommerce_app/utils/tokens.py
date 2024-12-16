@@ -21,10 +21,7 @@ def get_token(token_name,payment_data = None):
 		if token:
 			return token
 		if payment_data:
-			print('\n\nEnter again\n\n\n')
-			print(f'\n\n{payment_data}\n\n\n')
 			response = requests.request("POST",f"{BASE_URL}acceptance/payment_keys",headers=HEADERS,data=payment_data).text
 			response = json.loads(response)
-			print(f'\n\n{response}\n\n\n')
 			frappe.cache().set_value("payment_access_token", response.get('token'),expires_in_sec= TOKEN_EXIPRY_TIME)
 			return response.get('token')

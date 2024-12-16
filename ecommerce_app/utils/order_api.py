@@ -9,7 +9,8 @@ from ecommerce_app.utils.payment_api import get_payments_data
 def handle_checkout_submit(product_name =None,order_data = None):
 	order_data = json.loads(order_data)
 	paymob_token = get_token("paymob_access_token")
-	url = make_order_pay(paymob_token,product_name,order_data)
+	url , payments_access_token= make_order_pay(paymob_token,product_name,order_data)
+	create_purchase_invoice(payments_access_token)
 	return url
 
 def make_order_pay(token,product_name,order_data):
@@ -69,15 +70,13 @@ def make_order_pay(token,product_name,order_data):
 		integration_id = paymob_setting_doc.integration_id
 		payments_access_token = get_payments_data(token,order_id,integration_id,order_data,store_product_doc,ecommerce_setting_doc)	
 		external_url = f"https://accept.paymob.com/api/acceptance/iframes/824545?payment_token={payments_access_token}"
-		return external_url
+		return external_url,payments_access_token
 	else:
 		frappe.throw("Check Price Of Current Product")
 
 
 
 def create_order(order_response):
-	print("Order Response")
-	print(f"\n\n{order_response}\n\n")
 	store_order_doc = frappe.new_doc('Store Order')
 	store_order_doc.order_id = order_response.get('id')
 	store_order_doc.status = 'Pending'
@@ -97,7 +96,6 @@ def create_order(order_response):
 			store_order_doc.pincode = '0123'
 	store_order_doc.currency_type = order_response.get('currency')
 	if len(order_response.get('items')) > 0:
-		print(f'\n\n{order_response.get("items")}\n\n')
 		for item in order_response.get('items'):
 			store_order_doc.paid_amount = item.get('amount_cents')
 			store_order_doc.quantity = item.get('quantity')
@@ -108,7 +106,6 @@ def create_order(order_response):
 	except Exception as e:
 		frappe.throw(f"Error While inserting order {e}")
 	frappe.msgprint(f'Order Created <a href="../store-order/{store_order_doc.name}" target="_blank"><strong>{store_order_doc.name}</strong></a>')
-
 
 def validate_retal_price(retail_price):
 	if retail_price <= 0 or not retail_price:
