@@ -1,6 +1,6 @@
 import frappe
 from frappe.integrations.utils import make_get_request,make_post_request
-
+import random
 BASE_URL = 'https://api.printrove.com/api/external'
 SECONDS_IN_YEAR =	365	* 24 * 60 * 60	
 headers = {
@@ -56,6 +56,8 @@ def initializing_data():
 		'category':product.get('product').get('name'),
 		'front_mockup':product['mockup']['front_mockup'],
 		'back_mockup':product['mockup']['back_mockup'],
+		'is_published':1,
+		'retail_price':random.uniform(100, 500),
 		'variants':variants
 		}
 		if not frappe.db.exists('Store Product',{'printrove_id':product['id']}):
