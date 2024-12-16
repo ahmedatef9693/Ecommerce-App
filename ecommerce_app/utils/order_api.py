@@ -9,8 +9,7 @@ from ecommerce_app.utils.payment_api import get_payments_data
 def handle_checkout_submit(product_name =None,order_data = None):
 	order_data = json.loads(order_data)
 	paymob_token = get_token("paymob_access_token")
-	url , payments_access_token= make_order_pay(paymob_token,product_name,order_data)
-	create_purchase_invoice(payments_access_token)
+	url = make_order_pay(paymob_token,product_name,order_data)
 	return url
 
 def make_order_pay(token,product_name,order_data):
@@ -70,7 +69,7 @@ def make_order_pay(token,product_name,order_data):
 		integration_id = paymob_setting_doc.integration_id
 		payments_access_token = get_payments_data(token,order_id,integration_id,order_data,store_product_doc,ecommerce_setting_doc)	
 		external_url = f"https://accept.paymob.com/api/acceptance/iframes/824545?payment_token={payments_access_token}"
-		return external_url,payments_access_token
+		return external_url
 	else:
 		frappe.throw("Check Price Of Current Product")
 

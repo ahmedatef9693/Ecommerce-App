@@ -13,12 +13,15 @@ frappe.ui.form.on("Store Order", {
               message: "Order Paied Successfully!",
               indicator: "green",
             });
+            frm.reload_doc();
           },
           error: (r) => {
             // on error
           },
         });
       });
+    } else {
+      frm.remove_custom_button("Pay Order");
     }
   },
 });

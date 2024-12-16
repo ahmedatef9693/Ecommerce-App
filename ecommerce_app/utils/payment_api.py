@@ -45,6 +45,6 @@ def payment_transacton(order_name):
 		si_doc.items[0].rate = store_order.retail_price
 		si_doc.insert()
 		si_doc.submit()
-		frappe.db.set_value("Store Order",store_order.name,'status','Delivered') 
+		frappe.db.set_value("Store Order",store_order.name,'status','Delivered')
 	except Exception as e:
 		frappe.log_error("Error Occured in Creating Sales Invoice!")
