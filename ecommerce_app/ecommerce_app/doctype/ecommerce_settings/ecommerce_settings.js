@@ -6,8 +6,7 @@ frappe.ui.form.on("Ecommerce Settings", {
     frm.add_custom_button(__("Sync Products Now"), () => {
       frappe.call({
         method: "ecommerce_app.utils.scripts.initializing_data",
-        args: {},
-        // disable the button until the request is completed
+        args: { button: true },
         callback: (r) => {
           frappe.show_alert({
             message: "Products Updated Successfully!",

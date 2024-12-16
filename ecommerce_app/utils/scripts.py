@@ -42,10 +42,15 @@ def get_varaints(printrove_id):
 
 
 @frappe.whitelist()
-def initializing_data():
-	token = get_token()
-	products = get_products(token)
-	products = products.get('products')
+def initializing_data(button = None):
+	ecommerce_settings_doc = frappe.get_cached_doc('Ecommerce Settings')
+	if button or ecommerce_settings_doc.get_products_data:
+		token = get_token()
+		products = get_products(token)
+		create_store_products(products.get('products'))
+
+def create_store_products(products):
+	product_names = []
 	for product in products:
 		doc = None
 		variants = get_varaints(product['id'])
@@ -62,18 +67,27 @@ def initializing_data():
 		}
 		if not frappe.db.exists('Store Product',{'printrove_id':product['id']}):
 			product_data.update({'name':product.get('name')})
+			product_names.append(product.get('name'))
 			doc = frappe.get_doc(product_data).insert(ignore_permissions=True)
 			doc.product_description = doc.name
 		else:
 			doc = frappe.get_doc("Store Product",{'printrove_id':product['id']})
 			doc.product_description = doc.name
+			product_names.append(doc.name)
 			doc.update(product_data)
 			doc.save()
 			frappe.db.set_value("Store Product",{'printrove_id':product['id']},'name',product.get('name'))
+		create_items(product_names)
+	return product_names
 
 
 
-	
+def create_items(product_names):
+	for product in product_names:
+		if not frappe.db.exists('Item',product):
+			item_data = {'doctype':'Item','item_code':product,'item_group':'Products','stock_uom':'Nos'}
+			frappe.get_doc(item_data).insert()
+
 
 
 			

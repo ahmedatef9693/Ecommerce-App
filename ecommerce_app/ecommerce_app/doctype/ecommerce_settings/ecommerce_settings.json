@@ -11,6 +11,8 @@
   "email",
   "column_break_jk3oa",
   "password",
+  "background_job_details_section",
+  "get_products_data",
   "storefront_section",
   "use_custom_product_view_template",
   "custom_product_view_template"
@@ -54,12 +56,23 @@
    "fieldname": "storefront_section",
    "fieldtype": "Section Break",
    "label": "Storefront"
+  },
+  {
+   "fieldname": "background_job_details_section",
+   "fieldtype": "Section Break",
+   "label": "Background Job Details"
+  },
+  {
+   "default": "0",
+   "fieldname": "get_products_data",
+   "fieldtype": "Check",
+   "label": "Get Products Data"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-02-07 23:17:28.262576",
+ "modified": "2024-12-16 21:25:52.232061",
  "modified_by": "Administrator",
  "module": "Ecommerce App",
  "name": "Ecommerce Settings",
