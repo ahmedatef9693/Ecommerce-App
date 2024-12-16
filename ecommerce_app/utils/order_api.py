@@ -60,16 +60,14 @@ def make_order_pay(token,product_name,order_data):
 		}
 		order = json.dumps(order)
 		try:
-			response = requests.request("POST",f"{BASE_URL}ecommerce/orders",headers=HEADERS,data=order).text
-			response = json.loads(response)
+			response = requests.request("POST",f"{BASE_URL}ecommerce/orders",headers=HEADERS,data=order)
+			response = json.loads(response.text)
 			order_id = response.get('id')
 			create_order(response)
 		except Exception as e:
 			frappe.throw("An Error Occured While Processing Order {0}".format(e))
 		integration_id = paymob_setting_doc.integration_id
 		payments_access_token = get_payments_data(token,order_id,integration_id,order_data,store_product_doc,ecommerce_setting_doc)	
-		print(f'\n\n\npayment access token\n\n\n')
-		print(f'\n\n\n{payments_access_token}\n\n\n')
 		external_url = f"https://accept.paymob.com/api/acceptance/iframes/824545?payment_token={payments_access_token}"
 		return external_url
 	else:
@@ -99,6 +97,7 @@ def create_order(order_response):
 			store_order_doc.pincode = '0123'
 	store_order_doc.currency_type = order_response.get('currency')
 	if len(order_response.get('items')) > 0:
+		print(f'\n\n{order_response.get("items")}\n\n')
 		for item in order_response.get('items'):
 			store_order_doc.paid_amount = item.get('amount_cents')
 			store_order_doc.quantity = item.get('quantity')

@@ -1,6 +1,8 @@
 import frappe
 from frappe.integrations.utils import make_get_request,make_post_request
 import random
+import requests
+import json
 BASE_URL = 'https://api.printrove.com/api/external'
 SECONDS_IN_YEAR =	365	* 24 * 60 * 60	
 headers = {
@@ -15,16 +17,26 @@ def get_token():
 	if token:
 		return token
 	ecommerce_setting_doc = frappe.get_cached_doc('Ecommerce Settings')
-	response = make_post_request(f'{BASE_URL}/token',data={
+	response = requests.request('POST',f'{BASE_URL}/token',data={
 		'email': ecommerce_setting_doc.email, 
 		'password': ecommerce_setting_doc.get_password('password')})
-	#store token for a year
-	frappe.cache().set_value("printrove_access_token", response['access_token'],expires_in_sec= SECONDS_IN_YEAR)
-	return response['access_token']
+	
+	if validate_response(response=response):
+		response = json.loads(response.text)
+		#store token for a year
+		frappe.cache().set_value("printrove_access_token", response['access_token'],expires_in_sec= SECONDS_IN_YEAR)
+		return response['access_token']
+	else:
+		frappe.throw("Error Occured While Getting Access Token")
 
 def get_products(token):
 	headers.update({'Authorization':f'Bearer {token}'})
-	return make_get_request(f'{BASE_URL}/products',headers=headers)
+	response = requests.request('GET',f'{BASE_URL}/products',headers=headers)
+	
+	if validate_response(response=response):
+		return json.loads(response.text)
+	else:
+		frappe.throw("Error In Getting Products")
 
 def get_varaints(printrove_id):
 	response = make_get_request(f'{BASE_URL}/products/{printrove_id}',headers=headers)
@@ -62,7 +74,7 @@ def create_store_products(products):
 		'front_mockup':product['mockup']['front_mockup'],
 		'back_mockup':product['mockup']['back_mockup'],
 		'is_published':1,
-		'retail_price':random.uniform(100, 500),
+		'retail_price':random.randint(100, 500),
 		'variants':variants
 		}
 		if not frappe.db.exists('Store Product',{'printrove_id':product['id']}):
@@ -93,3 +105,8 @@ def create_items(product_names):
 			
 
 
+def validate_response(response):
+	if response.status_code >= 200 and response.status_code <=299:
+		return True
+	else:
+		return False
