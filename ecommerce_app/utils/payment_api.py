@@ -51,21 +51,3 @@ def update_payments():
 			frappe.log_error("Payment Failed")
 	except Exception as e:
 		frappe.log_error(frappe.get_traceback(), str(e))
-
-@frappe.whitelist()
-def payment_transacton(order_name):
-	store_order = frappe.get_cached_doc('Store Order',order_name)
-	try:
-		si_doc = frappe.new_doc('Sales Invoice')
-		si_doc.customer = 'ahmed'
-		si_doc.company = 'A&A'
-		si_doc.custom_order_id = store_order.order_id
-		si_doc.append('items',{})
-		si_doc.items[0].item_code = store_order.product
-		si_doc.items[0].qty = store_order.quantity
-		si_doc.items[0].rate = store_order.retail_price
-		si_doc.insert()
-		si_doc.submit()
-		frappe.db.set_value("Store Order",store_order.name,'status','Delivered')
-	except Exception as e:
-		frappe.log_error("Error Occured in Creating Sales Invoice!")
