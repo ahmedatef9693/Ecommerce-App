@@ -31,6 +31,26 @@ def get_payments_data(token,order_id,integration_id,order_data,store_order_doc,e
 	payment_access_token = get_token("payment_access_token",payment_data = payment_data)
 	return payment_access_token
 
+
+
+
+
+
+# api for updating the status
+@frappe.whitelist(allow_guest = True)
+def update_payments():
+	data = frappe.form_dict
+	print(f'\n\n{data}\n\n')
+	if data['hmac']:
+		frappe.db.set_value("Store Order",{"order_id":data["order"]},"status","Delivered")
+		frappe.log_error(str(data))
+		frappe.db.commit()
+		frappe.msgprint("Payment Successful")
+	else:
+		frappe.log_error(str(data))
+		frappe.msgprint("Payment Failed")
+
+
 @frappe.whitelist()
 def payment_transacton(order_name):
 	store_order = frappe.get_cached_doc('Store Order',order_name)

@@ -1,37 +1,33 @@
 import frappe
 from frappe.integrations.utils import make_get_request,make_post_request
+from ecommerce_app.utils.constants import *
 import random
 import requests
 import json
-BASE_URL = 'https://api.printrove.com/api/external'
-SECONDS_IN_YEAR =	365	* 24 * 60 * 60	
-headers = {
-  'Authorization':'',
-  'Content-Type': 'application/json',
-  'Accept': 'application/json'
-}
+
+
 
 
 def get_token():
-	token = frappe.cache().get_value('printrove_access_token')
+	token = frappe.safe_decode(frappe.cache().get('printrove_access_token'))
 	if token:
 		return token
 	ecommerce_setting_doc = frappe.get_cached_doc('Ecommerce Settings')
-	response = requests.request('POST',f'{BASE_URL}/token',data={
+	response = requests.request('POST',f'{BASE_URL_Printrove}/token',data={
 		'email': ecommerce_setting_doc.email, 
 		'password': ecommerce_setting_doc.get_password('password')})
 	
 	if validate_response(response=response):
 		response = json.loads(response.text)
 		#store token for a year
-		frappe.cache().set_value("printrove_access_token", response['access_token'],expires_in_sec= SECONDS_IN_YEAR)
+		frappe.cache().setex("printrove_access_token",PRINTROVE_TOKEN_EXPIRY,response['access_token'])
 		return response['access_token']
 	else:
 		frappe.throw("Error Occured While Getting Access Token")
 
 def get_products(token):
-	headers.update({'Authorization':f'Bearer {token}'})
-	response = requests.request('GET',f'{BASE_URL}/products',headers=headers)
+	PRINTROVE_HEADERS.update({'Authorization':f'Bearer {token}'})
+	response = requests.request('GET',f'{BASE_URL_Printrove}/products',headers=PRINTROVE_HEADERS)
 	
 	if validate_response(response=response):
 		return json.loads(response.text)
@@ -39,7 +35,7 @@ def get_products(token):
 		frappe.throw("Error In Getting Products")
 
 def get_varaints(printrove_id):
-	response = make_get_request(f'{BASE_URL}/products/{printrove_id}',headers=headers)
+	response = make_get_request(f'{BASE_URL_Printrove}/products/{printrove_id}',headers=PRINTROVE_HEADERS)
 	variants_list = []
 	for variant in response['product']['variants']:
 		variants_list.append({

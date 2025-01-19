@@ -127,8 +127,7 @@ app_license = "MIT"
 # Scheduled Tasks
 # ---------------
 scheduler_events = {
-    #every 5 seconds
-	"Cron":{
+	"cron":{
         "*/5 * * * *":[
             "ecommerce_app.utils.scripts.initializing_data"
             ],
