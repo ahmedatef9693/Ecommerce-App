@@ -17,11 +17,7 @@ def get_token(token_name,payment_data = None):
 		frappe.cache().setex("paymob_access_token",TOKEN_EXIPRY_TIME ,response['token'])
 		return response['token']
 	elif token_name == "payment_access_token":
-		token = frappe.safe_decode(frappe.cache().get("payment_access_token"))
-		if token:
-			return token
 		if payment_data:
 			response = requests.request("POST",f"{BASE_URL}acceptance/payment_keys",headers=PAYMOB_HEADERS,data=payment_data).text
 			response = json.loads(response)
-			frappe.cache().setex("payment_access_token",TOKEN_EXIPRY_TIME,response.get('token'))
 			return response.get('token')

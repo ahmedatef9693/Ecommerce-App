@@ -40,16 +40,17 @@ def get_payments_data(token,order_id,integration_id,order_data,store_order_doc,e
 @frappe.whitelist(allow_guest = True)
 def update_payments():
 	data = frappe.form_dict
-	print(f'\n\n{data}\n\n')
-	if data['hmac']:
-		frappe.db.set_value("Store Order",{"order_id":data["order"]},"status","Delivered")
-		frappe.log_error(str(data))
-		frappe.db.commit()
-		frappe.msgprint("Payment Successful")
-	else:
-		frappe.log_error(str(data))
-		frappe.msgprint("Payment Failed")
-
+	try:
+		if data['hmac']:
+			frappe.db.set_value("Store Order",{"order_id":data["order"]},"status","Delivered")
+			store_order_name = frappe.db.get_value("Store Order",{"order_id":data["order"],"status":"Delivered"},"name")
+			frappe.db.commit()
+			frappe.local.response["type"] = "redirect"
+			frappe.local.response["location"] = f"/app/store-order/{store_order_name}"
+		else:
+			frappe.log_error("Payment Failed")
+	except Exception as e:
+		frappe.log_error(frappe.get_traceback(), str(e))
 
 @frappe.whitelist()
 def payment_transacton(order_name):
